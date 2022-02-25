@@ -1,0 +1,36 @@
+syntax = "proto3";
+package grpc;
+
+option go_package = "github.com/JorgeAmbrocio/GRPC-TEST/ProtoCliente";
+
+message Descripcion {
+    int32 idProducto = 1;
+    string descripcion = 2;
+    int32 cantidad = 3;
+};
+
+message PedidoSolicitudRequest {
+    repeated Descripcion descripciones = 1;
+};
+
+message Pedido {
+    int32 idPedido = 1;
+    string estadoRestaurante =2;
+    string estadoRepartidor = 3;
+    PedidoSolicitudRequest pedidoSolicitud =5;
+}
+
+message PedidoSolicitudResponse {
+    string mensaje = 1;
+    Pedido pedido =2;
+}
+
+message idPedido {
+    int32 id = 1;
+}
+
+service PedidosService {
+    rpc PostPedido(PedidoSolicitudRequest) returns (Pedido);
+    rpc GetRepartidor(idPedido) returns (Pedido);
+    rpc GetRestaurante(idPedido) returns (Pedido);
+}
