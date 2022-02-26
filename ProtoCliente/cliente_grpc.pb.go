@@ -18,9 +18,16 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PedidosServiceClient interface {
+	// servicios cliente
 	PostPedido(ctx context.Context, in *PedidoSolicitudRequest, opts ...grpc.CallOption) (*Pedido, error)
-	GetRepartidor(ctx context.Context, in *IdPedido, opts ...grpc.CallOption) (*Pedido, error)
+	// servicios restaurante
+	PostPedidoRestaurante(ctx context.Context, in *Pedido, opts ...grpc.CallOption) (*Pedido, error)
+	PostEntregarRepartidor(ctx context.Context, in *Pedido, opts ...grpc.CallOption) (*Pedido, error)
 	GetRestaurante(ctx context.Context, in *IdPedido, opts ...grpc.CallOption) (*Pedido, error)
+	// servicios repartidor
+	PostPedidoRepartidor(ctx context.Context, in *Pedido, opts ...grpc.CallOption) (*Pedido, error)
+	PostEntregarCliente(ctx context.Context, in *Pedido, opts ...grpc.CallOption) (*Pedido, error)
+	GetRepartidor(ctx context.Context, in *IdPedido, opts ...grpc.CallOption) (*Pedido, error)
 }
 
 type pedidosServiceClient struct {
@@ -40,9 +47,18 @@ func (c *pedidosServiceClient) PostPedido(ctx context.Context, in *PedidoSolicit
 	return out, nil
 }
 
-func (c *pedidosServiceClient) GetRepartidor(ctx context.Context, in *IdPedido, opts ...grpc.CallOption) (*Pedido, error) {
+func (c *pedidosServiceClient) PostPedidoRestaurante(ctx context.Context, in *Pedido, opts ...grpc.CallOption) (*Pedido, error) {
 	out := new(Pedido)
-	err := c.cc.Invoke(ctx, "/grpc.PedidosService/GetRepartidor", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/grpc.PedidosService/PostPedidoRestaurante", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *pedidosServiceClient) PostEntregarRepartidor(ctx context.Context, in *Pedido, opts ...grpc.CallOption) (*Pedido, error) {
+	out := new(Pedido)
+	err := c.cc.Invoke(ctx, "/grpc.PedidosService/PostEntregarRepartidor", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -58,13 +74,47 @@ func (c *pedidosServiceClient) GetRestaurante(ctx context.Context, in *IdPedido,
 	return out, nil
 }
 
+func (c *pedidosServiceClient) PostPedidoRepartidor(ctx context.Context, in *Pedido, opts ...grpc.CallOption) (*Pedido, error) {
+	out := new(Pedido)
+	err := c.cc.Invoke(ctx, "/grpc.PedidosService/PostPedidoRepartidor", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *pedidosServiceClient) PostEntregarCliente(ctx context.Context, in *Pedido, opts ...grpc.CallOption) (*Pedido, error) {
+	out := new(Pedido)
+	err := c.cc.Invoke(ctx, "/grpc.PedidosService/PostEntregarCliente", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *pedidosServiceClient) GetRepartidor(ctx context.Context, in *IdPedido, opts ...grpc.CallOption) (*Pedido, error) {
+	out := new(Pedido)
+	err := c.cc.Invoke(ctx, "/grpc.PedidosService/GetRepartidor", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PedidosServiceServer is the server API for PedidosService service.
 // All implementations must embed UnimplementedPedidosServiceServer
 // for forward compatibility
 type PedidosServiceServer interface {
+	// servicios cliente
 	PostPedido(context.Context, *PedidoSolicitudRequest) (*Pedido, error)
-	GetRepartidor(context.Context, *IdPedido) (*Pedido, error)
+	// servicios restaurante
+	PostPedidoRestaurante(context.Context, *Pedido) (*Pedido, error)
+	PostEntregarRepartidor(context.Context, *Pedido) (*Pedido, error)
 	GetRestaurante(context.Context, *IdPedido) (*Pedido, error)
+	// servicios repartidor
+	PostPedidoRepartidor(context.Context, *Pedido) (*Pedido, error)
+	PostEntregarCliente(context.Context, *Pedido) (*Pedido, error)
+	GetRepartidor(context.Context, *IdPedido) (*Pedido, error)
 	mustEmbedUnimplementedPedidosServiceServer()
 }
 
@@ -75,11 +125,23 @@ type UnimplementedPedidosServiceServer struct {
 func (UnimplementedPedidosServiceServer) PostPedido(context.Context, *PedidoSolicitudRequest) (*Pedido, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PostPedido not implemented")
 }
-func (UnimplementedPedidosServiceServer) GetRepartidor(context.Context, *IdPedido) (*Pedido, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetRepartidor not implemented")
+func (UnimplementedPedidosServiceServer) PostPedidoRestaurante(context.Context, *Pedido) (*Pedido, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PostPedidoRestaurante not implemented")
+}
+func (UnimplementedPedidosServiceServer) PostEntregarRepartidor(context.Context, *Pedido) (*Pedido, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PostEntregarRepartidor not implemented")
 }
 func (UnimplementedPedidosServiceServer) GetRestaurante(context.Context, *IdPedido) (*Pedido, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetRestaurante not implemented")
+}
+func (UnimplementedPedidosServiceServer) PostPedidoRepartidor(context.Context, *Pedido) (*Pedido, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PostPedidoRepartidor not implemented")
+}
+func (UnimplementedPedidosServiceServer) PostEntregarCliente(context.Context, *Pedido) (*Pedido, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PostEntregarCliente not implemented")
+}
+func (UnimplementedPedidosServiceServer) GetRepartidor(context.Context, *IdPedido) (*Pedido, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetRepartidor not implemented")
 }
 func (UnimplementedPedidosServiceServer) mustEmbedUnimplementedPedidosServiceServer() {}
 
@@ -112,20 +174,38 @@ func _PedidosService_PostPedido_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
-func _PedidosService_GetRepartidor_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(IdPedido)
+func _PedidosService_PostPedidoRestaurante_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Pedido)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(PedidosServiceServer).GetRepartidor(ctx, in)
+		return srv.(PedidosServiceServer).PostPedidoRestaurante(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/grpc.PedidosService/GetRepartidor",
+		FullMethod: "/grpc.PedidosService/PostPedidoRestaurante",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PedidosServiceServer).GetRepartidor(ctx, req.(*IdPedido))
+		return srv.(PedidosServiceServer).PostPedidoRestaurante(ctx, req.(*Pedido))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PedidosService_PostEntregarRepartidor_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Pedido)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PedidosServiceServer).PostEntregarRepartidor(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/grpc.PedidosService/PostEntregarRepartidor",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PedidosServiceServer).PostEntregarRepartidor(ctx, req.(*Pedido))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -148,6 +228,60 @@ func _PedidosService_GetRestaurante_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PedidosService_PostPedidoRepartidor_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Pedido)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PedidosServiceServer).PostPedidoRepartidor(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/grpc.PedidosService/PostPedidoRepartidor",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PedidosServiceServer).PostPedidoRepartidor(ctx, req.(*Pedido))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PedidosService_PostEntregarCliente_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Pedido)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PedidosServiceServer).PostEntregarCliente(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/grpc.PedidosService/PostEntregarCliente",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PedidosServiceServer).PostEntregarCliente(ctx, req.(*Pedido))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PedidosService_GetRepartidor_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(IdPedido)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PedidosServiceServer).GetRepartidor(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/grpc.PedidosService/GetRepartidor",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PedidosServiceServer).GetRepartidor(ctx, req.(*IdPedido))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PedidosService_ServiceDesc is the grpc.ServiceDesc for PedidosService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -160,12 +294,28 @@ var PedidosService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _PedidosService_PostPedido_Handler,
 		},
 		{
-			MethodName: "GetRepartidor",
-			Handler:    _PedidosService_GetRepartidor_Handler,
+			MethodName: "PostPedidoRestaurante",
+			Handler:    _PedidosService_PostPedidoRestaurante_Handler,
+		},
+		{
+			MethodName: "PostEntregarRepartidor",
+			Handler:    _PedidosService_PostEntregarRepartidor_Handler,
 		},
 		{
 			MethodName: "GetRestaurante",
 			Handler:    _PedidosService_GetRestaurante_Handler,
+		},
+		{
+			MethodName: "PostPedidoRepartidor",
+			Handler:    _PedidosService_PostPedidoRepartidor_Handler,
+		},
+		{
+			MethodName: "PostEntregarCliente",
+			Handler:    _PedidosService_PostEntregarCliente_Handler,
+		},
+		{
+			MethodName: "GetRepartidor",
+			Handler:    _PedidosService_GetRepartidor_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
