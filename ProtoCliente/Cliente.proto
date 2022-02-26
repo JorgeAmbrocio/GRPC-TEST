@@ -35,11 +35,11 @@ service PedidosService {
     
     // servicios restaurante
     rpc PostPedidoRestaurante (Pedido)   returns (Pedido);
-    rpc PostEntregarRepartidor (Pedido) returns (Pedido);
+    rpc PostEntregarRepartidor (idPedido) returns (Pedido);
     rpc GetRestaurante(idPedido) returns (Pedido);
 
     // servicios repartidor
     rpc PostPedidoRepartidor (Pedido)   returns (Pedido);
-    rpc PostEntregarCliente (Pedido) returns (Pedido);
+    rpc PostEntregarCliente (idPedido) returns (Pedido);
     rpc GetRepartidor(idPedido)  returns (Pedido);
 }
