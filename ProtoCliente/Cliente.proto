@@ -30,7 +30,16 @@ message idPedido {
 }
 
 service PedidosService {
+    // servicios cliente
     rpc PostPedido(PedidoSolicitudRequest) returns (Pedido);
-    rpc GetRepartidor(idPedido) returns (Pedido);
+    
+    // servicios restaurante
+    rpc PostPedidoRestaurante (Pedido)   returns (Pedido);
+    rpc PostEntregarRepartidor (Pedido) returns (Pedido);
     rpc GetRestaurante(idPedido) returns (Pedido);
+
+    // servicios repartidor
+    rpc PostPedidoRepartidor (Pedido)   returns (Pedido);
+    rpc PostEntregarCliente (Pedido) returns (Pedido);
+    rpc GetRepartidor(idPedido)  returns (Pedido);
 }
